@@ -528,6 +528,12 @@
             color: var(--dark-gray);
         }
         
+        .product-item-color,
+        .product-item-size {
+            font-size: 0.8rem;
+            color: var(--dark-gray);
+        }
+        
         .order-summary {
             display: flex;
             justify-content: space-between;
@@ -1849,7 +1855,7 @@
             return date.toLocaleDateString('ar-EG');
         }
         
-        // Render orders as cards - UPDATED to show address, floor, government, and phone numbers
+        // Render orders as cards - UPDATED to show color and size information
         function renderOrdersCards() {
             ordersContainer.innerHTML = orders.map(order => {
                 // Get status class based on order status
@@ -1895,6 +1901,8 @@
                                 <img src="${item.image || 'https://via.placeholder.com/50'}" alt="${item.name}" class="product-item-img">
                                 <div class="product-item-details">
                                     <div class="product-item-name">${item.name}</div>
+                                    ${item.color ? `<div class="product-item-color">اللون: ${item.color}</div>` : ''}
+                                    ${item.size ? `<div class="product-item-size">المقاس: ${item.size}</div>` : ''}
                                     <div class="product-item-price">${item.price} ج.م x ${item.quantity}</div>
                                 </div>
                                 <div class="product-item-quantity">${item.quantity * item.price} ج.م</div>
@@ -1970,7 +1978,12 @@
                             <div class="detail-label">المنتجات:</div>
                             <div class="detail-value">
                                 ${order.items ? order.items.map(item => `
-                                    <div>${item.name} - ${item.quantity} x ${item.price} ج.م = ${item.quantity * item.price} ج.م</div>
+                                    <div>
+                                        ${item.name}
+                                        ${item.color ? ` - اللون: ${item.color}` : ''}
+                                        ${item.size ? ` - المقاس: ${item.size}` : ''}
+                                        - ${item.quantity} x ${item.price} ج.م = ${item.quantity * item.price} ج.م
+                                    </div>
                                 `).join('') : 'غير متوفر'}
                             </div>
                         </div>
@@ -2380,7 +2393,7 @@
             categoryChart = new Chart(ctx, {
                 type: 'doughnut',
                 data: {
-                    labels: categoryNames,
+                   labels: categoryNames,
                     datasets: [{
                         data: revenueValues,
                         backgroundColor: [
